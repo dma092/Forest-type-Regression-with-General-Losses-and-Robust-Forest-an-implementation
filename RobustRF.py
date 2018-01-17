@@ -82,7 +82,19 @@ class RobustRandomForest(RandomForestRegressor):
         except Warning as e:
             print (e)
             return(-1)
-    
+    def KneighborstPredict(self,K,newX,X,y):
+        ##Far from over
+        ypred,weights=self.robustPredict(newX,X,y)
+        order=len(X)-1-weights.argsort(axis=1)
+        topKWeights=weights[order<=K]
+        auxY=np.repeat(y,len(newX),).reshape((len(y),len(newX))).T
+        #weights[order<=K]=weights[order<=K]/(weights[order<=K].reshape((len(newX),K+1)).sum(axis=1))
+        weightsOrdered=weights[order<=K].reshape((len(newX),K+1))
+        weightsOrdered=weightsOrdered/(weightsOrdered.sum(axis=1))
+        auxY=auxY[order<=K].reshape((len(newX),K+1))
+        return((weights[order<=K]*auxY[order<=K]).sum(axis=1))
+        
+        
      
                    
            
