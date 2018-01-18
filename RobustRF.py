@@ -89,10 +89,13 @@ class RobustRandomForest(RandomForestRegressor):
         topKWeights=weights[order<=K]
         auxY=np.repeat(y,len(newX),).reshape((len(y),len(newX))).T
         #weights[order<=K]=weights[order<=K]/(weights[order<=K].reshape((len(newX),K+1)).sum(axis=1))
+        
         weightsOrdered=weights[order<=K].reshape((len(newX),K+1))
-        weightsOrdered=weightsOrdered/(weightsOrdered.sum(axis=1))
+        sumWeights=weightsOrdered.sum(axis=1).reshape(-1,1)
+        sumWeights[sumWeights==0]=0.0001
+        weightsOrdered=weightsOrdered/sumWeights
         auxY=auxY[order<=K].reshape((len(newX),K+1))
-        return((weights[order<=K]*auxY[order<=K]).sum(axis=1))
+        return((weightsOrdered*auxY).sum(axis=1))
         
         
      

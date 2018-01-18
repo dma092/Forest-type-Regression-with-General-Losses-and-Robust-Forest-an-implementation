@@ -31,5 +31,6 @@ leaves=RF.apply(X)
 predictions,weights=RF.robustPredict(X[0:5],X,y)
 newPred=RF.robustPredictUsingHuber(X[0:5],X,y)
 newPredTukey=RF.robustPredictUsingTukey(X[0:5],X,y)
-RF.KneighborstPredict(5,X[0:5],X,y)
+
+newPredKNN=RF.KneighborstPredict(90,X[0:5],X,y)
 
